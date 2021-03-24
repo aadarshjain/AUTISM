@@ -1,0 +1,127 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}
+Questions
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='dashboard.css')}}">
+{% endblock %}
+
+{% block content %}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">AUTISM DETECTOR</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+            <li><a href="qna.html">Take Test</a></li>
+            <li><a href="positive.html">Positive Stimuli</a></li>
+            <li><a href="negative.html">Negative Stimuli</a></li>
+            <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+        </div>
+      </div>
+    </nav>
+
+<div class = "profile">
+<form class = "user_profile" autocomplete = "on" method="post" name = "form">
+    {{ form.csrf_token }}
+    
+    <h2>QUESTION RELATED TO THE CHILDS BEHAVIOUR</h2>
+    <ul>
+    <li>
+        <b><h3>Q1)Responds negatively to unexpected
+or loud noises</h3><sup style=color:red>*</sup></b>
+        &nbsp{{form.ID1}}
+    </li> 
+
+    <li>
+        <b><h3>Q2)Holds hands over ears to protect ears from sound </h3><sup style=color:red>*</sup>&nbsp&nbsp</b>
+        {{form.ID2}}
+    
+
+    </li> 
+    <li>
+        <b><h3>Q3)Has trouble completing task when the radio is on</h3><sup style=color:red>*</sup></b>
+        {{form.ID3}}
+
+
+    </li> 
+    <li>
+        <b><h3>Q4)Is distracted or has trouble functioning if there is a lot of noise around</h3><sup style=color:red>*</sup></b>
+        {{form.ID4}}
+    </li>
+    <li>
+        <b><h3>Q5)Can’t work with background noise</h3><sup style=color:red>*</sup><br></b>
+        {{form.ID5}}
+   
+
+    </li>
+    <li>
+        <b><h3>Q6)Aappears to not hear what you say (eg- does not “tune in” to what you say, appears to ignore you)</h3><sup style=color:red>*</sup></b>
+        {{form.ID6}}
+    
+
+    </li>   
+    <li>
+        <b><h3>Q7)Doesn’t respond when name is called but you know the child’s hearing is OK</h3><sup style=color:red>*</sup>&nbsp&nbsp</b>
+        {{form.ID7}}
+    
+        <b><h3>Q8)Enjoys strange noises/ seeks to make noise for noise’s sake</h3><sup style=color:red>*</sup></b>
+        {{form.ID8}}<br><br>
+    
+        <b><h3>Q9)Prefers to be in the dark</h3><sup style=color:red>*</sup>&nbsp&nbsp</b>
+        {{form.ID9}}
+    
+        <b><h3>Q10)Expresses discomfort with or avoids bright lights (eg- hides from sunlight through window in car)</h3><sup style=color:red>*</sup></b>
+        {{form.ID10}}
+        <br>
+        <br>
+    </li>   
+   
+    <li>
+        <b><h3>Q11)Happy to be in the dark</h3><sup style=color:red>*</sup>&nbsp</b>
+        {{form.ID11}}
+
+    </li>
+    
+    <li>
+        <b><h3>Q12)Becomes frustrated when trying to find objects in competing backgrounds (for example, a cluttered drawer) </h3><sup style=color:red>*</sup></b>
+        {{form.ID12}}
+
+        <b><h3>Q13)Has difficulty putting puzzles together (as compared to same age children)</h3></b>
+        {{form.ID13}}
+
+    </li>
+    <li>
+        <b><h3>Q14)Is bothered by bright lights after others have adapted to the light</h3><sup style=color:red>*</sup></b>
+        {{form.ID14}}
+    
+        <b><h3>Q15)Covers eyes or squints to protect eyes from light</h3><sup style=color:red>*</sup></b>
+        {{form.ID15}}
+    
+        <b><h3>Q16)Looks carefully or intensely at objects/ people (eg- stares)</h3><sup style=color:red>*</sup></b>
+        {{form.ID16}}
+    </li>
+    <li>
+        <b><h3>Q17)Has a hard time finding objects in competing backgrounds (eg- shoes in messy room, favorite toy in junk drawer)</h3><sup style=color:red>*</sup></b>
+        {{form.ID17}}
+    
+         <button class="btn btn-lg btn-primary btn-block" type="submit">SUBMIT</button>
+    </li>
+</div>
+
+{% endblock %}
