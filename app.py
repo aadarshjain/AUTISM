@@ -11,7 +11,8 @@ from form import userform
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Thisissupposedtobesecret!'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/aadarsh/Desktop/AUTISM/database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:\\Users\\aadar\\Desktop\\AUTISM-main\\database.db'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/aadarsh/Desktop/AUTISM/database.db'
 
 #file:///home/aadarsh/Desktop/AUTISM/database.db
 
