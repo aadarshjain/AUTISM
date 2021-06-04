@@ -4,14 +4,30 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import InputRequired, Email, Length, EqualTo
 from flask_sqlalchemy  import SQLAlchemy
+import sqlite3 
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from form import userform
+import os
+from werkzeug.utils import secure_filename
+from Emotion_Recognition import model
+
 #from werkzeug import secure_filename
+UPLOAD_FOLDER = 'C:\\Users\\Public\\OneDrive\\Desktop\\AUTISM'
+ALLOWED_EXTENSIONS = {'mov'}
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+
+
+
+
+
+
+
 app.config['SECRET_KEY'] = 'Thisissupposedtobesecret!'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:\\Users\\aadar\\Desktop\\AUTISM-main\\database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:\\Users\\Public\\OneDrive\\Desktop\\AUTISM\\database.db'
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/aadarsh/Desktop/AUTISM/database.db'
 
 #file:///home/aadarsh/Desktop/AUTISM/database.db
@@ -22,10 +38,11 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
-
+ 
+global username
 class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(15), unique=True)
+    id = db.Column(db.Integer, primary_key=True) 
+    username= db.Column(db.String(15), unique=True)
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(80))
 
@@ -54,6 +71,9 @@ def login():
     str = ""
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
+        global username
+        username=user.username
+        print(username)
         if user:
             if check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember.data)
@@ -124,67 +144,75 @@ def userprofile():
         ID3 = request.form["ID3"]
         ID4 = request.form["ID4"]
         ID5 = request.form["ID5"]
-        ID6 = request.form["ID6"]
-        ID7 = request.form["ID7"]
-        ID8 = request.form["ID8"]
-        ID9 = request.form["ID9"]
-        ID10 = request.form["ID10"]
-        ID11 = request.form["ID11"]
-        ID12 = request.form["ID12"]
-        ID13 = request.form["ID13"]
-        ID14 = request.form["ID14"]
-        ID15 = request.form["ID15"]
-        ID16 = request.form["ID16"]
-        ID17 = request.form["ID17"]
-        #print("ID1 is", ID1)
-            #with sqlite3.connect("database.db") as con:  
-            #    cur = con.cursor() 
-            #    #cur.execute('DROP TABLE gemscap_table')
-            #    cur.execute('''CREATE TABLE IF NOT EXISTS gemscap_table(   
-            #    ID1 INTEGER NOT NULL,
-            #    ID2 INTEGER NOT NULL,
-            #    ID3 INTEGER NOT NULL,
-            #    ID4 INTEGER NOT NULL,
-            #    ID5 INTEGER NOT NULL,
-            #    ID6 INTEGER NOT NULL,
-            #    ID7 INTEGER NOT NULL,
-            #    ID8 INTEGER NOT NULL,
-            #    ID9 INTEGER NOT NULL,
-            #    ID10 INTEGER NOT NULL,
-            #    ID11 INTEGER NOT NULL,
-            #    ID12 INTEGER NOT NULL,
-            #    ID13 INTEGER NOT NULL,
-            #    ID14 INTEGER NOT NULL,
-            #    ID15 INTEGER NOT NULL,
-            #    ID16 INTEGER NOT NULL,
-            #    ID17 INTEGER NOT NULL,
-            #    
-            #    ) 
-            #    ''') 
-            #    cur.execute("INSERT INTO gemscap_table (ID1,ID2,ID3,ID4,ID5,ID6,ID7,ID8,ID9,ID10,ID11,ID12,ID13,ID14,ID15,ID16,ID17) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (ID1,ID2,ID3,ID4,ID5,ID6,ID7,ID8,ID9,ID10,ID11,ID12,ID13,ID14,ID15,ID16,ID17))
-            #    con.commit()
+        
+        with sqlite3.connect("database.db") as con:  
+                cur = con.cursor() 
+                #cur.execute('DROP TABLE AUTISM')
+                cur.execute('''CREATE TABLE IF NOT EXISTS AUTISM(   
+                USERNAME STRING PRIMARY KEY,
+                ID1 INTEGER,
+                ID2 INTEGER,
+                ID3 INTEGER,
+                ID4 INTEGER,
+                ID5 INTEGER,
+                ANGRYCOUNT INTEGER,
+                DISGUSTCOUNT INTEGER,
+                FEARCOUNT INTEGER,
+                HAPPYCOUNT INTEGER,
+                SADCOUNT INTEGER,
+                SURPRISECOUNT INTEGER,
+                NEUTRALCOUNT INTEGER
+                
+                ) 
+                ''') 
+                
+                cur.execute("INSERT INTO AUTISM (USERNAME,ID1,ID2,ID3,ID4,ID5) VALUES (?,?,?,?,?,?)", (username,ID1,ID2,ID3,ID4,ID5))
+                
+                con.commit()
 
-        #except:  
-        #    con.rollback()  
-        #    #msg = "We can not add the employee to the list"  
-        #finally:
-        return redirect(url_for('positive'))
-            #con.close()
+            #except:  
+                #con.rollback()  
+            #msg = "We can not add the employee to the list"  
+            #finally:
+                return redirect(url_for('dashboard'))
+                con.close()
 
     return render_template('qna.html',form = form)
+
 
 @app.route('/upload')
 def uploadfile():
    return render_template('upload.html')
-    
-@app.route('/uploader', methods = ['GET', 'POST'])
+	
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
-   if request.method == 'POST':
-      f = request.files['file']
-      print(f)
-      f.save(f.filename)
-      print(f)
-      return 'file uploaded successfully'
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            #flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            #flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            print(file.filename)
+            global username
+            print(username)
+            model(file.filename,username)
+            #fucntion call for model 1 and parameter is file.filename
+            return redirect(url_for('dashboard', filename=filename))
+    return render_template('dashboard.html')
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
