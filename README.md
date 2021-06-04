@@ -8,3 +8,4 @@ pip install flask_bootstrap |
 pip install WTForms |
 pip install Flask-WTF |
 pip install keras |
+pip install tensorflow |
