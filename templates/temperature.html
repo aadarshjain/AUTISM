@@ -1,0 +1,57 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}
+Temperature
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='dashboard.css')}}">
+{% endblock %}
+
+{% block content %}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">AUTISM DETECTOR</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+            <li><a href="qna.html">Take Test</a></li>
+            <li><a href="positive.html">Positive Stimuli</a></li>
+            <li><a href="negative.html">Negative Stimuli</a></li>
+            <li><a href="{{ url_for('uploadfile') }}">Upload Video</a></li>
+            <li><a href="{{ url_for('temp') }}">Temperature</a></li>
+            <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+          </ul>
+          
+        </div>
+      </div>
+    </nav>
+<center>
+<h1>TEMPERATURE AND HEART RATE</h1>
+<br><br>
+<div class = "profile">
+<form class = "user_profile" autocomplete = "on" method="post" name = "form">
+    
+    <!-- Material input -->
+    <div class="md-form">
+        <label for="numberExample">Temperature</label>
+        <input type="number" id="numberExample" class="form-control" style="width: fit-content;">
+    </div>
+    <br>
+  <!-- Material input -->
+    <div class="md-form">
+        <label for="numberExample">Heart Rate</label>
+        <input type="number" id="numberExample" class="form-control" style="width: fit-content;">
+    </div>
+  </center>
+
+{% endblock %}

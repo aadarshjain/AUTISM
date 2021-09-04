@@ -1,7 +1,60 @@
-<!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
+{% extends "bootstrap/base.html" %}
+
+{% block title %}
+Upload
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='dashboard.css')}}">
+{% endblock %}
+
+{% block content %}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">AUTISM DETECTOR</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+            <li><a href="qna.html">Take Test</a></li>
+            <li><a href="positive.html">Positive Stimuli</a></li>
+            <li><a href="negative.html">Negative Stimuli</a></li>
+            <li><a href="{{ url_for('uploadfile') }}">Upload Video</a></li>
+            <li><a href="{{ url_for('temp') }}">Temperature</a></li>
+            <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+          </ul>
+          
+        </div>
+      </div>
+    </nav>
+    <center> 
+    <h1>UPLOAD FILE</h1>
+    <br><br>
+    <div id="upload" class="uploadfile">
     <form method=post enctype=multipart/form-data>
-      <input type=file name=file>
-      <input type=submit value=Upload>
+      <input type=file name=file style = "width: 200px" />
+      <br>
+      <input onclick="myFunction()" type=submit value=Upload style="padding: 10px 5px"/>
     </form>
+    </div>
+  </center>
+
+  <script>
+    function myFunction() {
+      alert("Uploading in progress!");
+    }
+    </script>
+    
+
+{% endblock %}
+
+
+    

@@ -28,11 +28,10 @@ Questions
             <li><a href="positive.html">Positive Stimuli</a></li>
             <li><a href="negative.html">Negative Stimuli</a></li>
             <li><a href="{{ url_for('uploadfile') }}">Upload Video</a></li>
+            <li><a href="{{ url_for('temp') }}">Temperature</a></li>
             <li><a href="{{ url_for('logout') }}">Log Out</a></li>
           </ul>
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form>
+         
         </div>
       </div>
     </nav>
@@ -68,8 +67,11 @@ Questions
         <b><h3>Q5)Looks carefully or intensely at  objects/ people (eg- stares)</h3><sup style=color:red>*</sup><br></b>
         {{form.ID5}}
         
-        <button class="btn btn-lg btn-primary btn-block" type="submit"action="qna.html">SUBMIT</button>
+        
     </li>
+    
+    <br>
+    <button class="btn btn-primary" type="submit"action="qna.html" style="width: fit-content;">SUBMIT</button>
 
 
     
