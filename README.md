@@ -7,7 +7,3 @@ pip install Flask-Login |
 pip install flask_bootstrap |
 pip install WTForms |
 pip install Flask-WTF |
-pip install keras |
-pip install tensorflow |
-pip install numpy |
-pip install opencv-python |

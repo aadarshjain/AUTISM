@@ -74,10 +74,15 @@ def model(videoname,username):
     #Capture Video from file
     #videofile_path=videofile_path+file.filename
     
-    videofile_path='C:\\Users\\Public\\OneDrive\\Desktop\\AUTISM\\'+videoname
-    print(videofile_path)
+    #Utkarsh Path
+    #videofile_path='C:\\Users\\Public\\OneDrive\\Desktop\\AUTISM\\'+videoname
+    #print(videofile_path)
     #videofile_path='Database_Video/head-pose-face-detection-female-and-male.mp4'
-    
+
+    #Aadarsh Path
+    videofile_path='C:\\Users\\aadar\\Desktop\\AUTISM\\'+videoname
+    print(videofile_path)
+
     strext=str.split(videofile_path,'.')
     ext=strext[1]
 

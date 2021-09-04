@@ -12,23 +12,16 @@ import os
 from werkzeug.utils import secure_filename
 from Emotion_Recognition import model
 
-#from werkzeug import secure_filename
-UPLOAD_FOLDER = 'C:\\Users\\Public\\OneDrive\\Desktop\\AUTISM'
-ALLOWED_EXTENSIONS = {'mov'}
+UPLOAD_FOLDER = 'C:\\Users\\aadar\\Desktop\\AUTISM'                     #Aadarsh Path
+
+ALLOWED_EXTENSIONS = {'mov', 'MOV'}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-
-
-
-
-
-
-
 app.config['SECRET_KEY'] = 'Thisissupposedtobesecret!'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:\\Users\\Public\\OneDrive\\Desktop\\AUTISM\\database.db'
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/aadarsh/Desktop/AUTISM/database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:\\Users\\aadar\\Desktop\\AUTISM\\database.db'                  #Aadarsh Path
+
 
 #file:///home/aadarsh/Desktop/AUTISM/database.db
 
@@ -117,14 +110,17 @@ def logout():
     return redirect(url_for('index'))
 
 @app.route('/negative.html',methods=['GET','POST'])
+@login_required
 def negative():
     return render_template('/negative.html')
 
 @app.route("/positive.html",methods = ["POST","GET"])
+@login_required
 def positive():
     return render_template("positive.html")
 
 @app.route('/qna.html',methods=['GET','POST'])
+@login_required
 def userprofile():
     form = userform()
     #print("form.errors is ", form.errors )
@@ -181,14 +177,21 @@ def userprofile():
 
 
 @app.route('/upload')
+@login_required
 def uploadfile():
    return render_template('upload.html')
+
+@app.route('/temperature')
+@login_required
+def temp():
+   return render_template('temperature.html')
 	
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/upload', methods=['GET', 'POST'])
+@login_required
 def upload_file():
     if request.method == 'POST':
         # check if the post request has the file part
@@ -208,7 +211,7 @@ def upload_file():
             global username
             print(username)
             model(file.filename,username)
-            #fucntion call for model 1 and parameter is file.filename
+            #function call for model 1 and parameter is file.filename
             return redirect(url_for('dashboard', filename=filename))
     return render_template('dashboard.html')
 
