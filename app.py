@@ -7,7 +7,7 @@ from flask_sqlalchemy  import SQLAlchemy
 import sqlite3 
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-from form import userform
+from form import userform, health
 import os
 from werkzeug.utils import secure_filename
 from Emotion_Recognition import model
@@ -122,6 +122,7 @@ def positive():
 @app.route('/qna.html',methods=['GET','POST'])
 @login_required
 def userprofile():
+    
     form = userform()
     #print("form.errors is ", form.errors )
     #if form.is_submitted():
@@ -135,6 +136,7 @@ def userprofile():
         #print(result)
         ## save in database here itself
         #try:
+        AGE = request.form['AGE']
         ID1 = request.form["ID1"]
         ID2 = request.form["ID2"]
         ID3 = request.form["ID3"]
@@ -146,6 +148,7 @@ def userprofile():
                 #cur.execute('DROP TABLE AUTISM')
                 cur.execute('''CREATE TABLE IF NOT EXISTS AUTISM(   
                 USERNAME STRING PRIMARY KEY,
+                AGE STRING,
                 ID1 INTEGER,
                 ID2 INTEGER,
                 ID3 INTEGER,
@@ -161,30 +164,22 @@ def userprofile():
                 
                 ) 
                 ''') 
-                
-                cur.execute("INSERT INTO AUTISM (USERNAME,ID1,ID2,ID3,ID4,ID5) VALUES (?,?,?,?,?,?)", (username,ID1,ID2,ID3,ID4,ID5))
-                
+                global username
+                cur.execute("INSERT INTO AUTISM (USERNAME,AGE,ID1,ID2,ID3,ID4,ID5) VALUES (?,?,?,?,?,?,?)", (username,AGE,ID1,ID2,ID3,ID4,ID5))
+                cur.execute("INSERT INTO DATABASE (USERNAME) VALUES(?)",(username,) )
                 con.commit()
-
-            #except:  
-                #con.rollback()  
-            #msg = "We can not add the employee to the list"  
-            #finally:
+                
                 return redirect(url_for('dashboard'))
                 con.close()
-
+                
     return render_template('qna.html',form = form)
-
 
 @app.route('/upload')
 @login_required
 def uploadfile():
    return render_template('upload.html')
 
-@app.route('/temperature')
-@login_required
-def temp():
-   return render_template('temperature.html')
+
 	
 def allowed_file(filename):
     return '.' in filename and \
@@ -214,6 +209,31 @@ def upload_file():
             #function call for model 1 and parameter is file.filename
             return redirect(url_for('dashboard', filename=filename))
     return render_template('dashboard.html')
+
+@app.route('/temperature', methods=['GET', 'POST'])
+def temp():
+    form = health()
+    if form.is_submitted():
+        result = request.form
+
+        TEMPERATURE = result['TEMPERATURE']
+        HEARTRATE = result['HEARTRATE']
+        print(TEMPERATURE, HEARTRATE)
+        global username
+        with sqlite3.connect("database.db") as con:  
+                cur = con.cursor() 
+                #cur.execute('DROP TABLE AUTISM')
+                cur.execute(''' UPDATE AUTISM SET TEMPERATURE = {}, HEARTRATE = {} WHERE USERNAME = "{}" 
+                '''
+                .format(TEMPERATURE, HEARTRATE, str(username))) 
+                
+                con.commit()
+                
+                return redirect(url_for('dashboard'))
+                #con.close()
+        
+
+    return render_template('temperature.html', form = form)
 
 
 
