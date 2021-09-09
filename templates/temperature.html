@@ -35,23 +35,29 @@ Temperature
         </div>
       </div>
     </nav>
-<center>
-<h1>TEMPERATURE AND HEART RATE</h1>
-<br><br>
-<div class = "profile">
-<form class = "user_profile" autocomplete = "on" method="post" name = "form">
-    
-    <!-- Material input -->
-    <div class="md-form">
-        <label for="numberExample">Temperature</label>
-        <input type="number" id="numberExample" class="form-control" style="width: fit-content;">
-    </div>
-    <br>
-  <!-- Material input -->
-    <div class="md-form">
-        <label for="numberExample">Heart Rate</label>
-        <input type="number" id="numberExample" class="form-control" style="width: fit-content;">
-    </div>
-  </center>
+    <center>
+      <h1>TEMPERATURE AND HEART RATE</h1>
+      <br><br>
+      <div class = "profile">
+      <form class = "user_profile" autocomplete = "on" method="post" name = "form">
+          
+          <!-- Material input -->
+          <div class="md-form">
+             
+              {{form.TEMPERATURE.label}}
+              {{form.TEMPERATURE}}
+            </div>
+          <br>
+        <!-- Material input -->
+          <div class="md-form">
+              
+              {{form.HEARTRATE.label}}
+              {{form.HEARTRATE}}
+            </div>
+          <br>
+          <button class="btn btn-primary" type="submit" style="width: fit-content;">SUBMIT</button>
+          <br><br>
+          
+        </center>
 
 {% endblock %}
